@@ -1,0 +1,101 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.1
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.1.1
+        with:
+          node-version: '16'
+      - name: Cache node modules
+        uses: actions/cache@v3.0.2
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run Tests 🧪
+        run: yarn run test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.1
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.1.1
+        with:
+          node-version: '16'
+      - name: Cache node modules
+        uses: actions/cache@v3.0.2
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Cache Gatsby build output
+        uses: actions/cache@v3.0.2
+        with:
+          path: public
+          key: ${{ runner.os }}-public
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      # - name: Checkout data 🔨
+      #   uses: actions/checkout@v3.0.1
+      #   with:
+      #     repository: alexjorgef/website-data
+      #     token: ${{ secrets.DATA_GITHUB_TOKEN }}
+      #     path: website-data
+      # - name: Inject data 🔨
+      #   run: cp -rp website-data/* .
+      - name: Build 🔨
+        run: yarn run build
+        env:
+          GATSBY_GITHUB_TOKEN: ${{ secrets.GATSBY_GITHUB_TOKEN }}
+          GATSBY_GA_MEASUREMENT_ID: ${{ secrets.GATSBY_GA_MEASUREMENT_ID }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: public
+          path: public
+
+  deploy:
+    needs:
+      - build
+      - test
+    if: success() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.1
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: public
+          path: public
+      # - name: Upload and pin to Web3-Storage 🚀
+      #   uses: web3-storage/add-to-web3@77b645f58a5ec593d5ab23666fee1537331b7858
+      #   id: web3storage
+      #   with:
+      #     web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
+      #     path_to_add: 'public'
+      #     wrap_with_directory: false
+      # - name: Deploy _dnslink to Cloudflare 🚀
+      #   run: |
+      #     curl -X PUT "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/dns_records/${{ secrets.CLOUDFLARE_RECORD }}" \
+      #       -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_XAUTH_EMAIL }}" \
+      #       -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_XAUTH_KEY }}" \
+      #       -H "Content-Type: application/json" \
+      #       --data '{"type":"TXT","name":"_dnslink.alexjorgef.com","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
