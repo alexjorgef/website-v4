@@ -102,7 +102,7 @@ const Footer = () => {
   //       setState({ ...state, dnslinkHash: "error" })
   //     }
   //   }
-  //   resolveDnslink("alexjorgef.com")
+  //   resolveDnslink("website-v4.alexjorgef.com")
   // }, [state])
 
   const authorSocialMedia = data.site.siteMetadata.authorSocialMedia

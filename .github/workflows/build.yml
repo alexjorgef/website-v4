@@ -98,4 +98,4 @@ jobs:
       #       -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_XAUTH_EMAIL }}" \
       #       -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_XAUTH_KEY }}" \
       #       -H "Content-Type: application/json" \
-      #       --data '{"type":"TXT","name":"_dnslink.alexjorgef.com","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
+      #       --data '{"type":"TXT","name":"_dnslink.website-v4.alexjorgef.com","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1

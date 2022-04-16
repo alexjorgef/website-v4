@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://alexjorgef.com"><img src="src/assets/img/github-header.png" /></a>
+  <a href="https://website-v4.alexjorgef.com"><img src="src/assets/img/github-header.png" /></a>
  </p>
 <h2 align="center">
   🧬 Personal website, built with <a href="https://www.gatsbyjs.org">Gatsby</a>.

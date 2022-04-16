@@ -120,7 +120,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `alexjorgef-website`,
-        short_name: `alexjorgef.com`,
+        short_name: `website-v4.alexjorgef.com`,
         start_url: `/`,
         background_color: `#000`,
         theme_color: `#000`,

@@ -10,7 +10,7 @@ module.exports = {
   siteAuthorAvailableStartHour: '10:00',
   siteAuthorAvailableEndDay: 5,
   siteAuthorAvailableEndHour: '19:30',
-  siteUrl: 'alexjorgef.vercel.app',
+  siteUrl: 'website-v4.alexjorgef.com',
   siteAuthorResumeLink:
     'https://github.com/posquit0/Awesome-CV/raw/master/examples/cv.pdf',
   siteAuthorSocialMedia: [

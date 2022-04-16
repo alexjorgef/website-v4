@@ -2,7 +2,7 @@
   "name": "@alexjorgef/website",
   "description": "A simple personal website, built with Gatsby",
   "version": "4.0.4",
-  "homepage": "https://alexjorgef.com",
+  "homepage": "https://website-v4.alexjorgef.com",
   "private": false,
   "repository": {
     "type": "git",
